@@ -30,12 +30,9 @@ class Routes
 
     public static function get_route(string $httpMethod, $endpoint)
     {
-        $index = 0;
         $foundRoute = null;
 
         foreach (self::$routes as $currentRoute) {
-            $index++;
-
             if ($currentRoute->httpMethod === $httpMethod && $currentRoute->endpoint === $endpoint) {
                 $foundRoute = $currentRoute;
                 break;
