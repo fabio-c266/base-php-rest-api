@@ -31,10 +31,11 @@ class Database
     {
         try {
             $connection = self::$connection;
-            $result = $connection->query($queryContent);
+            $result = $connection->prepare($queryContent);
+            $result->execute();
 
             if ($result) {
-                $rows = $result->fetchAll();
+                $rows = $result->fetchAll(PDO::FETCH_ASSOC);
                 return $rows;
             } else {
                 return false;

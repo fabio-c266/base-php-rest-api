@@ -16,8 +16,10 @@ $dotenv->load();
 Env::validate();
 Database::connect();
 
-Routes::get('/auth/login', 'AuthController::index');
+Routes::post('/auth/login', 'AuthController::store');
+
 Routes::get('/users', 'UserController::index');
+Routes::post('/users', 'UserController::store');
 
 header('Content-Type: application/json');
 
@@ -39,6 +41,12 @@ if (isset($_REQUEST)) {
             $className = $route->controllerName;
             $class = "\App\Controllers\\{$className}";
             $classInstance = new $class();
+
+            if ($route->httpMethod === "POST") {
+                $_SERVER['body'] = json_decode(file_get_contents('php://input'));
+            }
+
+            $_SERVER['query'] = $parsed_url['query'] ?? '';
 
             echo call_user_func([$classInstance, $route->controllerMethod], $_SERVER);
         } catch (Exception $except) {
