@@ -2,6 +2,7 @@
 
 namespace Application;
 
+use App\Config\Database;
 use App\Core\Routes;
 use App\Config\Env;
 use Dotenv\Dotenv;
@@ -13,6 +14,7 @@ $dotenv = Dotenv::createImmutable(__DIR__);
 $dotenv->load();
 
 Env::validate();
+Database::connect();
 
 Routes::get('/auth/login', 'AuthController::index');
 Routes::get('/users', 'UserController::index');
