@@ -3,9 +3,16 @@
 namespace Application;
 
 use App\Core\Routes;
+use App\Config\Env;
+use Dotenv\Dotenv;
 use Exception;
 
 require __DIR__ . '/vendor/autoload.php';
+
+$dotenv = Dotenv::createImmutable(__DIR__);
+$dotenv->load();
+
+Env::validate();
 
 Routes::get('/auth/login', 'AuthController::index');
 Routes::get('/users', 'UserController::index');
