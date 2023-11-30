@@ -2,9 +2,9 @@
 
 namespace App\Utils;
 
-class StringHelper
+class StringFormatter
 {
-    public static function paramsStringQuery(array $params): string
+    public static function ArrayToQueryValues(array $params): string
     {
         $formattedParams = array_map(function ($value) {
             return "'" . addslashes($value) . "'";
@@ -13,7 +13,7 @@ class StringHelper
         return implode(', ', $formattedParams);
     }
 
-    public static function getQueryParamsFromUrl(string $url)
+    public static function getQueryParams(string $url)
     {
         parse_str($url, $arr);
         return $arr;

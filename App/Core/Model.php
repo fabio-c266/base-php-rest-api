@@ -2,7 +2,7 @@
 
 namespace App\Core;
 
-use App\Utils\StringHelper;
+use App\Utils\StringFormatter;
 
 class Model
 {
@@ -27,7 +27,7 @@ class Model
     public function insert(array $columns, array $data)
     {
         $columnsJoined = implode(", ", $columns);
-        $values = StringHelper::paramsStringQuery($data);
+        $values = StringFormatter::ArrayToQueryValues($data);
 
         return "insert into {$this->table} ({$columnsJoined}) values ({$values})";
     }

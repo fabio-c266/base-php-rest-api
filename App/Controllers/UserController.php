@@ -3,7 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\UserModel;
-use App\Utils\StringHelper;
+use App\Utils\StringFormatter;
 use Exception;
 
 class UserController
@@ -16,7 +16,7 @@ class UserController
             throw new Exception('Invalid query paramets.');
         }
 
-        $queryParams = StringHelper::getQueryParamsFromUrl($query);
+        $queryParams = StringFormatter::getQueryParams($query);
         $id = reset($queryParams);
 
         if (strlen($id) == 0) {
