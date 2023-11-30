@@ -14,8 +14,9 @@ class UserModel extends Model
     public function create(array $data)
     {
         try {
-            $values = StringHelper::paramsStringQuery($data);
-            Database::query("INSERT INTO {$this->table} (email, password) " . "VALUES ({$values})");
+            $query = $this->insert(['email', 'password'], $data);
+
+            Database::query($query);
         } catch (Exception $error) {
             return $error->getMessage();
         }
@@ -23,14 +24,16 @@ class UserModel extends Model
 
     public function findByEmail(string $email)
     {
-        $user = Database::query("SELECT id, email, password FROM {$this->table} where email = '{$email}'");
+        $query = $this->all(['id', 'email', 'password']) . $this->where('email', '=', $email);
+        $user = Database::query($query);
 
         return $user ? $user[0] : null;
     }
 
     public function findOne(string $id)
     {
-        $user = Database::query("SELECT id, email, created_at FROM {$this->table} where id = '{$id}'");
+        $query = $this->all(['id', 'email', 'created_at']) . $this->where("id", '=', $id);
+        $user = Database::query($query);
 
         return $user ? $user[0] : null;
     }
