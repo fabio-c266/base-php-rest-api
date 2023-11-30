@@ -1,5 +1,5 @@
 {
-    "name": "fabio-c266/rest-api-php",
+    "name": "fabio-c266/base-php-rest-api",
     "autoload": {
         "psr-4": {
             "App\\": "App/"
