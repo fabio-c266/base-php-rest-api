@@ -8,24 +8,24 @@ class Routes
 {
     private static array $routes = [];
 
-    public static function get($endpoint, $controller)
+    public static function get($endpoint, $controller, $isNeedAuth = false)
     {
-        return self::save_router('GET', $endpoint, $controller);
+        return self::save_router('GET', $endpoint, $controller, $isNeedAuth);
     }
 
-    public static function post($endpoint, $controller)
+    public static function post($endpoint, $controller, $isNeedAuth = false)
     {
-        return self::save_router('POST', $endpoint, $controller);
+        return self::save_router('POST', $endpoint, $controller, $isNeedAuth);
     }
 
-    public static function put($endpoint, $controller)
+    public static function put($endpoint, $controller, $isNeedAuth = false)
     {
-        return self::save_router('PUT', $endpoint, $controller);
+        return self::save_router('PUT', $endpoint, $controller, $isNeedAuth);
     }
 
-    public static function delete($endpoint, $controller)
+    public static function delete($endpoint, $controller, $isNeedAuth = false)
     {
-        return self::save_router('DELETE', $endpoint, $controller);
+        return self::save_router('DELETE', $endpoint, $controller, $isNeedAuth);
     }
 
     public static function get_route(string $httpMethod, $endpoint)
@@ -43,7 +43,7 @@ class Routes
     }
 
 
-    private static function save_router($httpMethod, $endpoint, $controller)
+    private static function save_router($httpMethod, $endpoint, $controller, bool $isNeedAuth)
     {
         if (array_keys(self::$routes, $endpoint)) {
             return 'Router with this endpoint is already registered.';
@@ -75,7 +75,7 @@ class Routes
             return "This method not exists in class.";
         }
 
-        $route = new Route($httpMethod, $endpoint, $controllerName, $controllerMethod);
+        $route = new Route($httpMethod, $endpoint, $controllerName, $controllerMethod, $isNeedAuth);
         array_push(self::$routes, $route);
     }
 

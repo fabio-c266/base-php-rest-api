@@ -7,6 +7,8 @@ use App\Core\Routes;
 use App\Config\Env;
 use Dotenv\Dotenv;
 use Exception;
+use Firebase\JWT\JWT;
+use Firebase\JWT\Key;
 
 require __DIR__ . '/vendor/autoload.php';
 
@@ -17,9 +19,9 @@ Env::validate();
 Database::connect();
 
 Routes::post('/auth/login', 'AuthController::store');
-
 Routes::get('/users', 'UserController::index');
 Routes::post('/users', 'UserController::store');
+Routes::get('/courses', 'CourseController::index', true);
 
 header('Content-Type: application/json');
 
@@ -38,6 +40,23 @@ if (isset($_REQUEST)) {
 
     if ($route) {
         try {
+            if ($route->isNeedAuth) {
+                $header = getallheaders();
+
+                if (!isset($header['Authorization'])) {
+                    throw new Exception("Is need Bearer token.");
+                }
+
+                $token = explode(' ', $header['Authorization'])[1];
+
+                try {
+                    $decoded = JWT::decode($token, new Key($_ENV['JWT_SECRET'], 'HS256'));
+                    $_SERVER['jwt_data'] = $decoded->data;
+                } catch (Exception $error) {
+                    throw new Exception('Invalid token.');
+                }
+            }
+
             $className = $route->controllerName;
             $class = "\App\Controllers\\{$className}";
             $classInstance = new $class();

@@ -30,8 +30,11 @@ class AuthController
         }
 
         $payload = [
-            "id" => $user['id'],
-            "email" => $user['email']
+            "exp" => time() * 3600 * 6, //6 Hours
+            "data" => [
+                "id" => $user['id'],
+                "email" => $user['email']
+            ]
         ];
 
         $token = JWT::encode($payload, $_ENV['JWT_SECRET'], 'HS256');
