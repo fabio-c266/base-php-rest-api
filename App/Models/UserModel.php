@@ -24,7 +24,7 @@ class UserModel extends Model
 
     public function findByEmail(string $email)
     {
-        $query = $this->all(['id', 'email', 'password']) . $this->where('email', '=', $email);
+        $query = $this->all(['id', 'email', 'password']) . $this->where('email', $email);
         $user = Database::query($query);
 
         return $user ? $user[0] : null;
@@ -32,7 +32,7 @@ class UserModel extends Model
 
     public function findOne(string $id)
     {
-        $query = $this->all(['id', 'email', 'created_at']) . $this->where("id", '=', $id);
+        $query = $this->all(['id', 'email', 'created_at']) . $this->where("id", $id);
         $user = Database::query($query);
 
         return $user ? $user[0] : null;
