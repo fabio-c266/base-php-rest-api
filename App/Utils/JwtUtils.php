@@ -22,8 +22,8 @@ class JwtUtils
     public static function is_valid_token($token)
     {
         try {
-            JWT::decode($token, new Key($_ENV['JWT_SECRET'], 'HS256'));
-            return true;
+            $data = JWT::decode($token, new Key($_ENV['JWT_SECRET'], 'HS256'));
+            return $data;
         } catch (Exception $error) {
             return false;
         }

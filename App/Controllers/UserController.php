@@ -11,21 +11,11 @@ class UserController
 {
     public function get($req)
     {
-        $query = $req['query'];
-
-        if (strlen($query) == 0 || !str_contains($query, 'id=')) {
-            throw new Exception('Invalid Query Paraments', Response::HTTP_BAD_REQUEST);
-        }
-
-        $queryParams = StringFormatter::getQueryParams($query);
-        $id = reset($queryParams);
-
-        if (strlen($id) == 0) {
-            throw new Exception('Without Value in ID', Response::HTTP_BAD_REQUEST);
-        }
+        $jwtData = $req['jwt_data'];
+        $user_id = $jwtData->data->id;
 
         $userModel = new UserModel();
-        $user = $userModel->findOne($id);
+        $user = $userModel->findOne($user_id);
 
         if (!$user) {
             throw new Exception('User Not Found.', Response::HTTP_BAD_REQUEST);

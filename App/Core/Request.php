@@ -51,10 +51,13 @@ class Request
                 }
 
                 $token = explode(' ', $header['Authorization'])[1];
+                $is_valid = JwtUtils::is_valid_token($token);
 
-                if (!JwtUtils::is_valid_token($token)) {
+                if (!$is_valid) {
                     return throw new Exception('Invalid token.', Response::HTTP_UNAUTHORIZED);
                 }
+
+                $server['jwt_data'] = $is_valid;
             }
 
             $className = $route->controllerName;
