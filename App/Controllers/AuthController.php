@@ -3,8 +3,8 @@
 namespace App\Controllers;
 
 use App\Models\UserModel;
+use App\Utils\JwtUtils;
 use Exception;
-use Firebase\JWT\JWT;
 
 class AuthController
 {
@@ -29,16 +29,12 @@ class AuthController
             throw new Exception("Invalid credentials");
         }
 
-        $payload = [
-            "exp" => time() * 3600 * 6, //6 Hours
-            "data" => [
-                "id" => $user['id'],
-                "email" => $user['email']
-            ]
+        $data =  [
+            "id" => $user['id'],
+            "email" => $user['email']
         ];
 
-        $token = JWT::encode($payload, $_ENV['JWT_SECRET'], 'HS256');
-
+        $token = JwtUtils::generate($data);
         $data = [
             "status" => "200",
             "data" => [
