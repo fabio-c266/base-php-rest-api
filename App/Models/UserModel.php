@@ -4,7 +4,6 @@ namespace App\Models;
 
 use App\Config\Database;
 use App\Core\Model;
-use App\Utils\StringHelper;
 use Exception;
 
 class UserModel extends Model
@@ -14,7 +13,7 @@ class UserModel extends Model
     public function create(array $data)
     {
         try {
-            $query = $this->insert(['email', 'password'], $data);
+            $query = $this->insert(columns: ['email', 'password'], data: $data);
 
             Database::query($query);
         } catch (Exception $error) {
@@ -24,7 +23,7 @@ class UserModel extends Model
 
     public function findByEmail(string $email)
     {
-        $query = $this->all(['id', 'email', 'password']) . $this->where('email', $email);
+        $query = $this->all(columns: ['id', 'email', 'password']) . $this->where(column: 'email', value: $email);
         $user = Database::query($query);
 
         return $user ? $user[0] : null;
@@ -32,7 +31,7 @@ class UserModel extends Model
 
     public function findOne(string $id)
     {
-        $query = $this->all(['id', 'email', 'created_at']) . $this->where("id", $id);
+        $query = $this->all(columns: ['id', 'email', 'created_at']) . $this->where(column: "id", value: $id);
         $user = Database::query($query);
 
         return $user ? $user[0] : null;

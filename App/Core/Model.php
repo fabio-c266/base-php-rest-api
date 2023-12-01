@@ -19,7 +19,7 @@ class Model
         return "select {$columns} from {$this->table}";
     }
 
-    public function where($column, $value, $action = '=')
+    public function where(string $column, string $value, string $action = '=')
     {
         return " where {$column} {$action} '{$value}'";
     }
