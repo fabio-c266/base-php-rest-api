@@ -39,13 +39,13 @@ class Request
                 $header = getallheaders();
 
                 if (!isset($header['Authorization'])) {
-                    throw new Exception("Is need Bearer token.");
+                    throw new Exception("Is need Bearer token.", Response::HTTP_UNAUTHORIZED);
                 }
 
                 $token = explode(' ', $header['Authorization'])[1];
 
                 if (!JwtUtils::is_valid_token($token)) {
-                    return throw new Exception('Invalid token.');
+                    return throw new Exception('Invalid token.', Response::HTTP_UNAUTHORIZED);
                 }
             }
 

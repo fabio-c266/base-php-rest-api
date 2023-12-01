@@ -15,6 +15,7 @@ $dotenv->load();
 Env::validate();
 Database::connect();
 
+header("Access-Control-Allow-Origin: *");
 header('Content-Type: application/json');
 
 if (isset($_REQUEST)) {
