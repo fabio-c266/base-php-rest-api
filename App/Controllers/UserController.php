@@ -2,48 +2,44 @@
 
 namespace App\Controllers;
 
+use App\Core\Response;
 use App\Models\UserModel;
 use App\Utils\StringFormatter;
 use Exception;
 
 class UserController
 {
-    public function index($req)
+    public function get($req)
     {
         $query = $req['query'];
 
         if (strlen($query) == 0 || !str_contains($query, 'id=')) {
-            throw new Exception('Invalid query paramets.');
+            throw new Exception('Invalid Query Paraments', Response::HTTP_BAD_REQUEST);
         }
 
         $queryParams = StringFormatter::getQueryParams($query);
         $id = reset($queryParams);
 
         if (strlen($id) == 0) {
-            throw new Exception('Id value is need.');
+            throw new Exception('Without Value in ID', Response::HTTP_BAD_REQUEST);
         }
 
         $userModel = new UserModel();
         $user = $userModel->findOne($id);
 
         if (!$user) {
-            throw new Exception('Invalid user.');
+            throw new Exception('User Not Found.', Response::HTTP_BAD_REQUEST);
         }
 
-        return json_encode(
-            [
-                "status" => 200,
-                "data" => $user,
-            ]
-        );
+        return Response::reponseJson($user);
     }
 
-    public function store($req)
+    public function create($req)
     {
         $body = $req['body'];
 
         if (empty($body->email) || empty($body->password)) {
-            throw new Exception('Invalid body format.');
+            throw new Exception('Invalid Body.', Response::HTTP_BAD_REQUEST);
         }
 
         $emailFormatted = strtolower(trim($body->email));
@@ -52,7 +48,7 @@ class UserController
         $isAlreadyRegisteredEmail = $userModel->findByEmail($emailFormatted);
 
         if ($isAlreadyRegisteredEmail) {
-            throw new Exception('Not is allowed use this email.');
+            throw new Exception('There is already a user with this email', Response::HTTP_BAD_REQUEST);
         }
 
         $passwordHashed = password_hash($body->password, PASSWORD_BCRYPT, ["cost" => 6]);
@@ -66,11 +62,6 @@ class UserController
 
         unset($data['password']);
 
-        $response = [
-            "status" => 201,
-            "data" => $data,
-        ];
-
-        return json_encode($response);
+        return Response::reponseJson($data, RESPONSE::HTTP_CREATED);
     }
 }

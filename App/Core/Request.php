@@ -4,11 +4,12 @@ namespace App\Core;
 
 use App\Utils\JwtUtils;
 use Exception;
+use Throwable;
 
-Routes::post('/auth/login', 'AuthController::store');
-Routes::get('/users', 'UserController::index');
-Routes::post('/users', 'UserController::store');
-Routes::get('/courses', 'CourseController::index', true);
+Routes::post('/auth/login', 'AuthController::authenticate');
+Routes::get('/users', 'UserController::get');
+Routes::post('/users', 'UserController::create');
+Routes::get('/courses', 'CourseController::get', true);
 
 class Request
 {
@@ -63,14 +64,12 @@ class Request
             $server['query'] = $parsed_url['query'] ?? '';
 
             echo call_user_func([$classInstance, $route->controllerMethod], $server);
-        } catch (Exception $except) {
-            http_response_code(400);
+        } catch (Throwable $throwable) {
             $data = [
-                "status" => 400,
-                "message" => $except->getMessage(),
+                "message" => $throwable->getMessage(),
             ];
 
-            echo json_encode($data);
+            echo Response::reponseJson($data, $throwable->getCode());
         }
     }
 }

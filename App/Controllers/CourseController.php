@@ -2,15 +2,12 @@
 
 namespace App\Controllers;
 
+use App\Core\Response;
+
 class CourseController
 {
-    public function index($req)
+    public function get($req)
     {
-        $data = [
-            "status" => 200,
-            "data" => []
-        ];
-
-        return json_encode($data);
+        return Response::reponseJson([]);
     }
 }
