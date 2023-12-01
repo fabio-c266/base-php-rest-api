@@ -5,11 +5,9 @@ namespace App\Core;
 use App\Utils\JwtUtils;
 use Exception;
 use Throwable;
+use App\Core\Routes as Routes;
 
-Routes::post('/auth/login', 'AuthController::authenticate');
-Routes::get('/users', 'UserController::get');
-Routes::post('/users', 'UserController::create');
-Routes::get('/courses', 'CourseController::get', true);
+require './App/routes.php';
 
 class Request
 {
@@ -28,13 +26,11 @@ class Request
         $route = Routes::get_route($httpMethod, $endpoint);
 
         if (!$route) {
-            http_response_code(404);
             $data = [
-                "status" => 404,
                 "messsage" => "Router not found"
             ];
 
-            echo json_encode($data);
+            echo Response::reponseJson($data, Response::HTTP_NOT_FOUND);
             return;
         }
 
