@@ -13,6 +13,14 @@ class Request
 {
     public static function handler($server)
     {
+        if ($server['REQUEST_METHOD'] === 'OPTIONS') {
+            header('Access-Control-Allow-Methods: GET, POST, PUT, PATCH, DELETE, OPTIONS');
+            header('Access-Control-Allow-Headers: X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, Authorization');
+            header('Access-Control-Allow-Credentials: true');
+            header('HTTP/1.1 200 OK');
+            exit();
+        }
+
         $endpoint = $server['REQUEST_URI'];
         $httpMethod = $server['REQUEST_METHOD'];
 
