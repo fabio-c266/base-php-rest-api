@@ -2,11 +2,13 @@
 
 namespace App\Config;
 
+use App\Utils\CompareArray;
+
 class Env
 {
     public static function validate()
     {
-        $envFormat = [
+        $envSchema = [
             "DB_HOST",
             "DB_USER",
             "DB_PASSWORD",
@@ -14,7 +16,9 @@ class Env
             "JWT_SECRET"
         ];
 
-        if (!empty(array_diff_key(array_flip($envFormat), $_ENV))) {
+        $isValid = CompareArray::compareKeys(data: $_ENV, schema: $envSchema);
+
+        if (!$isValid) {
             trigger_error("Invalid environment variables", E_USER_ERROR);
             exit();
         }

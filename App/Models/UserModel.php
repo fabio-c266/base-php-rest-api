@@ -13,7 +13,7 @@ class UserModel extends Model
     public function create(array $data)
     {
         try {
-            $query = $this->insert(columns: ['email', 'password'], data: $data);
+            $query = $this->insert(columns: ['id', 'name', 'email', 'password', 'phone'], data: $data);
 
             Database::query($query);
         } catch (Exception $error) {
@@ -31,7 +31,7 @@ class UserModel extends Model
 
     public function findOne(string $id)
     {
-        $query = $this->all(columns: ['id', 'email', 'created_at']) . $this->where(column: "id", value: $id);
+        $query = $this->all(['id', 'name', 'email', 'phone', 'created_at']) . $this->where(column: "id", value: $id);
         $user = Database::query($query);
 
         return $user ? $user[0] : null;
