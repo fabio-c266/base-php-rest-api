@@ -14,12 +14,10 @@ class CompareArray
         foreach ($schema as $key => $type) {
             if (!array_key_exists($key, $data)) {
                 return false;
-                break;
             }
 
             if (empty($data[$key]) || gettype($data[$key]) !== $type) {
                 return false;
-                break;
             }
         }
 
