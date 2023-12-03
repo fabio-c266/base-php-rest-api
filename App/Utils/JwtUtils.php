@@ -11,7 +11,8 @@ class JwtUtils
     public static function generate($data)
     {
         $payload = [
-            "exp" => time() * 3600 * 6, //6 Hours
+            "exp" => time() + 20, //6 Hours 3600 * 6
+            "iat" => time(),
             "data" => $data
         ];
 
